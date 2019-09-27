@@ -9,3 +9,7 @@ export class ForceUser {
   birth_year: string;
   gender: string;
 }
+
+export class ForceUserResult {
+  results: ForceUser[];
+}

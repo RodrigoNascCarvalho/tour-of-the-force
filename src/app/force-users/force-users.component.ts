@@ -21,7 +21,7 @@ export class ForceUsersComponent implements OnInit {
     this.forceUserService
       .getForceUsers()
       .subscribe(
-        forceUsers => this.forceUsers = forceUsers
+        forceUsers => this.forceUsers = forceUsers.results
       );
   }
 }
