@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  background: #011;
+  margin: 2em;
+}
+
+body, input[type="text"], button {
+  color: rgb(255, 239, 187);
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+}
+
+nav a {
+  display: inline-flex;
+  background: #ffd;
+  color: #011;
+  padding: 10px 20px;
+  margin-right: 10px;
+  justify-content: space-between;
+}
+
+h1, h2, h3 {
+  color: rgb(255, 196, 0);
+}
+
+h1 {
+  font-weight: bolder;
+  font-size: 150%;
+}
+
+h2, h3 {
+  font-weight: lighter;
+  font-weight: 100%;
+}
+
+button {
+  background: #ffd;
+  color: #011;
+  padding: 10px 20px;
+}

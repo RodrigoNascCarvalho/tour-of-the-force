@@ -1,0 +1,14 @@
+<section class="force-user-details" *ngIf="forceUser">
+    <h2>{{forceUser.name | uppercase}} Details</h2>
+    <label>name:
+      <input [(ngModel)]="forceUser.name" placeholder="name"/>
+    </label>
+    <p>Height: <span>{{forceUser.height}}</span></p>
+    <p>Gender: {{forceUser.gender}}</p>
+    <p>Hair Color: {{forceUser.hair_color}}</p>
+    <p>Eye Color: {{forceUser.eye_color}}</p>
+    <p>Skin Color: {{forceUser.skin_color}}</p>
+    <p>Birth Year: {{forceUser.birth_year}}</p>
+
+    <button (click)="goBack()">Back</button>
+</section>

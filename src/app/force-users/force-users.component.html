@@ -1,0 +1,12 @@
+<!--
+ -->
+
+<h2>Force Users</h2>
+<ul class="force-users">
+  <li
+    *ngFor="let forceUser of forceUsers"
+    [class.selected]="selectedForceUser === forceUser"
+    routerLink="/details/{{forceUser.id}}">
+    <span class="badge">{{forceUser.id}}</span> {{forceUser.name}}
+  </li>
+</ul>
