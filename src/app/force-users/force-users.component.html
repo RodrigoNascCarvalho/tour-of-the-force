@@ -10,4 +10,5 @@
     <span class="badge">{{forceUser.id}}</span> {{forceUser.name}}
   </li>
 </ul>
+<p *ngIf="isLoading$ | async">Loading...</p>
 <button *ngIf="hasMorePages()" (click)="getMoreForceUsers()">Load More...</button>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ForceUser } from '../force-user';
 import { ForceUserService } from '../force-user.service';
 import { take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-force-users',
@@ -11,6 +12,7 @@ import { take } from 'rxjs/operators';
 export class ForceUsersComponent implements OnInit {
   forceUsers: ForceUser[] = [];
   selectedForceUser: ForceUser;
+  isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private forceUserService: ForceUserService) { }
 
@@ -19,13 +21,17 @@ export class ForceUsersComponent implements OnInit {
   }
 
   getForceUsers() {
+    this.isLoading$.next(true);
+
     this.forceUserService
       .getForceUsers()
       .pipe(
         take(30)
       )
       .subscribe(
-        forceUser => this.forceUsers.push(forceUser)
+        forceUser => this.forceUsers.push(forceUser),
+        error => console.log(error),
+        () => this.isLoading$.next(false)
       );
   }
 
@@ -34,13 +40,17 @@ export class ForceUsersComponent implements OnInit {
   }
 
   getMoreForceUsers() {
+    this.isLoading$.next(true);
+
     this.forceUserService
       .getNextForceUsersPage()
       .pipe(
         take(10)
       )
       .subscribe(
-        forceUser => this.forceUsers.push(forceUser)
+        forceUser => this.forceUsers.push(forceUser),
+        error => console.log(error),
+        () => this.isLoading$.next(false)
       );
   }
 }

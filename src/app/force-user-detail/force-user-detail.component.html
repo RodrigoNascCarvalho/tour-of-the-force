@@ -1,4 +1,4 @@
-<section class="force-user-details" *ngIf="forceUser">
+<section *ngIf="!(isLoading$ | async)" class="force-user-details">
     <h2>{{forceUser.name | uppercase}} Details</h2>
 
     <p>Height: <span>{{forceUser.height}}</span></p>
@@ -8,4 +8,5 @@
     <p>Skin Color: {{forceUser.skin_color}}</p>
     <p>Birth Year: {{forceUser.birth_year}}</p>
 </section>
+<p *ngIf="isLoading$ | async">Loading...</p>
 <button (click)="goBack()">Back</button>
