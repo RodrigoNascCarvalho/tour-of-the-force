@@ -18,6 +18,7 @@ export class ForceUserService {
   ) {}
 
   private forceUsersUrl = 'https://swapi.co/api/people/';
+  private pagination = '';
 
   private log(message: string): void {
     this.messageService.add(`ForceUserService: ${message}`);
@@ -57,9 +58,37 @@ export class ForceUserService {
   getForceUsers(): Observable<ForceUser> {
     return this.fetchForceUsersPage()
       .pipe(
-        expand(({ next }) => next ? this.fetchForceUsersPage(next) : EMPTY),
+        expand(({ next }) => {
+          if (!next) {
+            return EMPTY;
+          }
+
+          this.pagination = next;
+          return this.fetchForceUsersPage(next)
+        }),
         concatMap(({ results }) => results)
       );
+  }
+
+  hasMorePages(): boolean {
+    return !!this.pagination;
+  }
+
+  getNextForceUsersPage(): Observable<ForceUser> {
+    this.log(`continue page from ${this.pagination}`);
+
+    return this.fetchForceUsersPage(this.pagination).pipe(
+      expand(({ next }) => {
+        this.pagination = next;
+        if (!next) {
+          // tslint:disable-next-line: deprecation
+          return EMPTY;
+        }
+
+        return this.fetchForceUsersPage(next);
+      }),
+      concatMap(({ results }) => results)
+    );
   }
 
   getForceUser(id: number): Observable<ForceUser> {

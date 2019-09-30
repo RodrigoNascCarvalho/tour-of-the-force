@@ -10,3 +10,4 @@
     <span class="badge">{{forceUser.id}}</span> {{forceUser.name}}
   </li>
 </ul>
+<button *ngIf="hasMorePages()" (click)="getMoreForceUsers()">Load More...</button>
