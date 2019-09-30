@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ForceUser, ForceUserResult } from './force-user';
-import { FORCE_USERS } from './mock-users';
 
 import { MessageService } from './message.service';
 import { Observable, of, EMPTY } from 'rxjs';
 
 import { HttpClient } from "@angular/common/http";
-import { catchError, tap, mapTo, map, expand, concatMap, toArray } from 'rxjs/operators';
+import { catchError, tap, map, expand, concatMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +40,6 @@ export class ForceUserService {
 
 
   fetchForceUsersPage(pageUrl: string = `${this.forceUsersUrl}?page=1`): Observable<ForceUserResult> {
-    this.log('fetched force users...');
     return this.http.get<ForceUserResult>(pageUrl)
       .pipe(
         tap(() => this.log(`fetched page ${pageUrl}`)),
@@ -57,7 +55,6 @@ export class ForceUserService {
   }
 
   getForceUsers(): Observable<ForceUser> {
-    this.log('fetched force users...');
     return this.fetchForceUsersPage()
       .pipe(
         expand(({ next }) => next ? this.fetchForceUsersPage(next) : EMPTY),
