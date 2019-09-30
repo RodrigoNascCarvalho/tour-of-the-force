@@ -64,7 +64,7 @@ export class ForceUserService {
           }
 
           this.pagination = next;
-          return this.fetchForceUsersPage(next)
+          return this.fetchForceUsersPage(next);
         }),
         concatMap(({ results }) => results)
       );

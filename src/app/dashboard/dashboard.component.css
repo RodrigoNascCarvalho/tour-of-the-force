@@ -1,3 +1,12 @@
+.top-force-users ol {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.top-force-users ol li {
+  width: 50%;
+}
+
 .top-force-users a {
   color: #fff;
 }
