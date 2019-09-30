@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ForceUser } from '../force-user';
 import { ForceUserService } from '../force-user.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,9 +20,9 @@ export class DashboardComponent implements OnInit {
   getForceUsers(): void {
     this.forceUserService
       .getForceUsers()
+      .pipe(take(20))
       .subscribe(
-        forceUsers => this.forceUsers = forceUsers.slice(1, 5)
+        forceUser => this.forceUsers.push(forceUser)
       );
   }
-
 }

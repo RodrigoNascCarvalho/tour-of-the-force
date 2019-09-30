@@ -3,10 +3,10 @@ import { ForceUser, ForceUserResult } from './force-user';
 import { FORCE_USERS } from './mock-users';
 
 import { MessageService } from './message.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, EMPTY } from 'rxjs';
 
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient } from "@angular/common/http";
+import { catchError, tap, mapTo, map, expand, concatMap, toArray } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -38,16 +38,38 @@ export class ForceUserService {
     };
   }
 
-  getForceUsers(): Observable<ForceUserResult> {
+
+
+  fetchForceUsersPage(pageUrl: string = `${this.forceUsersUrl}?page=1`): Observable<ForceUserResult> {
     this.log('fetched force users...');
-    return this.http.get<ForceUserResult>(this.forceUsersUrl)
+    return this.http.get<ForceUserResult>(pageUrl)
       .pipe(
-        catchError(this.handleError<ForceUserResult>('getForceUsers', { results: [] }))
+        tap(() => this.log(`fetched page ${pageUrl}`)),
+        map(response => ({
+          results: response.results.map(forceUser => ({
+            ...forceUser,
+            id: +forceUser.url.match(/https:\/\/swapi\.co\/api\/people\/(\d+)/)[1]
+          })),
+          next: response.next
+        })),
+        catchError(this.handleError<ForceUserResult>('getForceUsers', { results: [], next: null }))
       );
   }
 
-  getForceUser(id: number) {
+  getForceUsers(): Observable<ForceUser> {
+    this.log('fetched force users...');
+    return this.fetchForceUsersPage()
+      .pipe(
+        expand(({ next }) => next ? this.fetchForceUsersPage(next) : EMPTY),
+        concatMap(({ results }) => results)
+      );
+  }
+
+  getForceUser(id: number): Observable<ForceUser> {
     this.log(`fetched force user with id -> ${id}`);
-    return of(FORCE_USERS.find(forceUser => forceUser.id === id));
+    return this.http.get<ForceUser>(`${this.forceUsersUrl}${id}/`)
+      .pipe(
+        catchError(this.handleError<ForceUser>('getForceUser', null))
+      );
   }
 }

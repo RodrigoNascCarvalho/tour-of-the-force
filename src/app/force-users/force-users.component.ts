@@ -8,7 +8,7 @@ import { ForceUserService } from '../force-user.service';
   styleUrls: ['./force-users.component.css']
 })
 export class ForceUsersComponent implements OnInit {
-  forceUsers: ForceUser[];
+  forceUsers: ForceUser[] = [];
   selectedForceUser: ForceUser;
 
   constructor(private forceUserService: ForceUserService) { }
@@ -21,7 +21,7 @@ export class ForceUsersComponent implements OnInit {
     this.forceUserService
       .getForceUsers()
       .subscribe(
-        forceUsers => this.forceUsers = forceUsers.results
+        forceUser => this.forceUsers.push(forceUser)
       );
   }
 }

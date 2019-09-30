@@ -12,4 +12,5 @@ export class ForceUser {
 
 export class ForceUserResult {
   results: ForceUser[];
+  next: string;
 }
